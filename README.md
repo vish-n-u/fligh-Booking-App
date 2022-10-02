@@ -26,17 +26,18 @@ This project is node.js back-end code for a Flight booking application that allo
 
 
 
-> # REST API paths
-## registration 
+
+> ## REST API paths
+### registration 
 * POST `/flighBooking/ap1/v1/registration`
 
-## LOGIN 
+### LOGIN 
 *  POST `/flighBooking/ap1/v1/login`
   
-## OtpCheck
+### OtpCheck
 *  POST `/flighBooking/ap1/v1/otpCheck`
 
-## refreshToken
+### refreshToken
 * GET `/flighBooking/ap1/v1/token`
   
   
