@@ -10,8 +10,13 @@ This project is node.js back-end code for a Flight booking application that allo
  * a jwt access token and refresh token is provided on login
  * an api is provided for refresh tokens to get new access token
 
-* A Sample User *
+|external applications|
+|-|
+|otp creator application|
 
+
+
+* A Sample User 
   - firstName : "XYZ",
   - lastName : "ABC",
   - email : "xyz12email.com",
@@ -19,10 +24,6 @@ This project is node.js back-end code for a Flight booking application that allo
   - password  : "XYz@123456",
   - userType : "CUSTOMER", (optional, if not provided , default is customer),
 
-
-|external applications|
-|-|
-|otp creator application|
 
 
 > # REST API paths
