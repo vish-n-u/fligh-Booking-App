@@ -13,11 +13,20 @@ This project is node.js back-end code for a Flight booking application that allo
   - password  : "XYz@123456",
   - userType : "CUSTOMER", (optional, if not provided , default is customer),
  * An Otp would be sent to the provided EmailId , if within 5 min the user does not provide the otp , then the user will be removed
- * a jwt access token and refresh tokken is provided on login
- * an api is set for refresh tokens which can be used to authenticate user after the access token expires.
+ * a jwt access token and refresh token is provided on login
+ * an api is provided for refresh tokens to get new access token
 
 > # REST API paths
 ## registration 
-* `POST  /flighBooking/ap1/v1/registration`
+* POST `/flighBooking/ap1/v1/registration`
+
+## LOGIN 
+*  POST `/flighBooking/ap1/v1/login`
+  
+## OtpCheck
+*  POST `/flighBooking/ap1/v1/otpCheck`
+
+## refreshToken
+* GET `/flighBooking/ap1/v1/token`
   
   
