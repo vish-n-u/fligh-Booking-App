@@ -1,7 +1,7 @@
 # Flight Booking App
 This project is node.js back-end code for a Flight booking application that allow syou to book ,schedule and update a flight
 
-***This is the UserAuth Branch and have details related to only user Auth***
+***This is the UserAuth Branch and have details related to only user Authentication***
 
 ## Features
 > ### Account Creation
