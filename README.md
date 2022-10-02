@@ -17,7 +17,7 @@ This project is node.js back-end code for a Flight booking application that allo
 
 
 
-* A Sample User 
+## A Sample User 
   - firstName : "XYZ",
   - lastName : "ABC",
   - email : "xyz12email.com",
