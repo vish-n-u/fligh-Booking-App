@@ -4,17 +4,21 @@ This project is node.js back-end code for a Flight booking application that allo
 * This is the UserAuth Branch and have details related to only user Auth *
 ## Features
 > ### Account Creation
-* You can Create three Types of Users :- Flight Admin , Admin , Customer.
-* For registration (a sample User):-
+ * You can Create three Types of Users :- Flight Admin , Admin , Customer.
+ * User registration based on their personal detail
+ * An Otp would be sent to the provided EmailId , if within 5 min the user does not provide the otp , then the user will be removed
+ * a jwt access token and refresh token is provided on login
+ * an api is provided for refresh tokens to get new access token
+
+** A Sample User **
+
   -firstName : "XYZ",
   - lastName : "ABC",
   - email : "xyz12email.com",
   - birthDate : "10-25-2000",
   - password  : "XYz@123456",
   - userType : "CUSTOMER", (optional, if not provided , default is customer),
- * An Otp would be sent to the provided EmailId , if within 5 min the user does not provide the otp , then the user will be removed
- * a jwt access token and refresh token is provided on login
- * an api is provided for refresh tokens to get new access token
+
 
 |external applications|
 |-|
