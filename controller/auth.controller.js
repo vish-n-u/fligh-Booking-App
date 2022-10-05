@@ -69,17 +69,13 @@ exports.otpCheck = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     console.log(authConfig.secretKy);
-    const accessToken = jwt.sign({ id: req.user.userId }, authConfig.secretKy, {
+    const accessToken = jwt.sign({ id: req.user.id }, authConfig.secretKy, {
       expiresIn: "15m",
     });
-    console.log(authConfig.refreshKy);
-    const refreshToken = jwt.sign(
-      { id: req.user.userId },
-      authConfig.refreshKy,
-      {
-        expiresIn: "5h",
-      }
-    );
+    // console.log(authConfig.refreshKy, req.user.id);
+    const refreshToken = jwt.sign({ id: req.user.id }, authConfig.refreshKy, {
+      expiresIn: "5h",
+    });
 
     return res.status(200).send({ accessToken, refreshToken });
   } catch (err) {
@@ -91,11 +87,11 @@ exports.login = async (req, res) => {
 };
 
 exports.refreshToken = async (req, res) => {
-  const accessToken = jwt.sign({ id: req.user.userId }, authConfig.secretKy, {
+  const accessToken =  jwt.sign({ id: req.user.id }, authConfig.secretKy, {
     expiresIn: "15m",
   });
   try {
-    return res.status(200).send(accessToken);
+    return res.status(200).send({ token: accessToken });
   } catch (err) {
     console.log(err);
     return res

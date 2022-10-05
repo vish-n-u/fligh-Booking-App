@@ -1,25 +1,23 @@
-const userController = require("../controller/auth.controller");
-const { authMiddleware, authJwt } = require("../middleware/index.middleware");
+const userController = require("../controller/user.controller");
+const {
+  authJwt,
+  userMiddleware,
+  paramsValidator,
+} = require("../middleware/index.middleware");
 module.exports = (app) => {
-  app.post(
-    "/flighBooking/ap1/v1/registration",
-    [authMiddleware.registrationValidation],
-    userController.registration
-  );
-  //   app.post("/flightBooking/api/v1/login");
-  app.post(
-    "/flighBooking/ap1/v1/otp",
-    [authMiddleware.otpVerify],
-    userController.otpCheck
-  );
-  app.post(
-    "/flighBooking/ap1/v1/login",
-    [authMiddleware.login],
-    userController.login
-  );
   app.get(
-    "/flighBooking/ap1/v1/token",
-    [authJwt.validateRefreshToken],
-    userController.refreshToken
+    "/flightApp/api/v1/users",
+    [authJwt.verifyJwt, userMiddleware.isAdmin],
+    userController.getAllUsers
+  ),
+    app.get(
+      "/flightApp/api/v1/users/:id",
+      [authJwt.verifyJwt, userMiddleware.getSingleUserDetail],
+      userController.getOneUserDetails
+    );
+  app.post(
+    "/flightApp/api/v1/users/:id",
+    [authJwt.verifyJwt, paramsValidator.validateParamId, userMiddleware.update],
+    userController.update
   );
 };

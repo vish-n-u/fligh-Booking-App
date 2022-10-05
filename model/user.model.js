@@ -1,5 +1,5 @@
 const constant = require("../utils/constant");
-const { userStatus } = require("../utils/constant");
+const { userStatus, flightStart } = require("../utils/constant");
 
 function userModel(Sequelize, sequelize) {
   const userTable = sequelize.define("users", {
