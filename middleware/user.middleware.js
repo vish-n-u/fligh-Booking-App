@@ -1,18 +1,6 @@
 const constant = require("../utils/constant");
 const { userModel: User } = require("../config/db.config");
 
-exports.isAdmin = async (req, res, next) => {
-  if (
-    req.user.userType == constant.userType.admin &&
-    req.user.userStatus == constant.userStatus.approved
-  ) {
-    next();
-  } else {
-    return res.status(401).send({
-      message: "Invalid request",
-    });
-  }
-};
 exports.getSingleUserDetail = async (req, res, next) => {
   //   console.log("SingleUSer Reached!!!!!!");
   if (req.user.userType == constant.userType.admin) {

@@ -7,7 +7,7 @@ const {
 module.exports = (app) => {
   app.get(
     "/flightApp/api/v1/users",
-    [authJwt.verifyJwt, userMiddleware.isAdmin],
+    [authJwt.verifyJwt, authJwt.isAdmin],
     userController.getAllUsers
   ),
     app.get(

@@ -20,6 +20,8 @@ exports.verifyJwt = async (req, res, next) => {
         console.log(decoded);
         if (!user) {
           return res.status(400).send("Invalid userToken");
+        } else if (user.userStatus !== constant.userStatus.approved) {
+          return res.status(401).send("Unauthorized!!");
         } else {
           req.user = user;
           next();
@@ -58,5 +60,29 @@ exports.verifyRefreshToken = async (req, res, next) => {
   } catch (err) {
     console.log(err.message);
     return res.status(500).send("Internal server error");
+  }
+};
+
+exports.isAdminOrFlightAdmin = (req, res, next) => {
+  if (
+    req.user.userType == constant.userType.admin ||
+    req.user.userType == constant.userType.flightAdmin
+  ) {
+    next();
+  } else {
+    return res.status(401).send("Unauthorized user");
+  }
+};
+
+exports.isAdmin = async (req, res, next) => {
+  if (
+    req.user.userType == constant.userType.admin &&
+    req.user.userStatus == constant.userStatus.approved
+  ) {
+    next();
+  } else {
+    return res.status(401).send({
+      message: "Invalid request",
+    });
   }
 };

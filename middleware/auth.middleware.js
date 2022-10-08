@@ -116,6 +116,7 @@ exports.login = async (req, res, next) => {
   if (!user) {
     return res.status(400).send("Invalid emailID");
   }
+  console.log(bcrypt.compareSync(req.body.password, user.password));
   if (
     !req.body.password ||
     bcrypt.compareSync(req.body.password, user.password) == false
