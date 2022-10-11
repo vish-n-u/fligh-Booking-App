@@ -11,7 +11,7 @@ module.exports = (app) => {
     [authJwt.verifyJwt, authJwt.isAdminOrFlightAdmin, flightValidator.create],
     flightController.create
   );
-  app.post(
+  app.put(
     "/flightApp/api/v1/flights/:id",
     [
       authJwt.verifyJwt,
