@@ -37,12 +37,12 @@ exports.update = async (req, res) => {
 
     const newFlight = await Flight.update(obj, {
       where: { id: req.params.id },
-      returning: true,
+      returning: ["*"],
     });
-    // const updatedFlight = await Flight.findOne({
-    // where: { id: req.params.id },
-    // });
-    return res.status(200).send(newFlight);
+    const updatedFlight = await Flight.findOne({
+      where: { id: req.params.id },
+    });
+    return res.status(200).send({ newFlight, updatedFlight });
   } catch (err) {
     console.log(err);
     return res.status(500).send("Internal err occured....");

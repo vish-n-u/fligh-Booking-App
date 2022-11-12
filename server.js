@@ -14,6 +14,7 @@ app.get("/", (req, res) => {
 require("./route/auth.route")(app);
 require("./route/user.route")(app);
 require("./route/flight.route")(app);
+require("./route/flightDates.route")(app);
 app.listen(serverConfig, (req, res) => {
   console.log("SuccessFully reached");
 });

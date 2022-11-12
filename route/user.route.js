@@ -15,7 +15,7 @@ module.exports = (app) => {
       [authJwt.verifyJwt, userMiddleware.getSingleUserDetail],
       userController.getOneUserDetails
     );
-  app.post(
+  app.put(
     "/flightApp/api/v1/users/:id",
     [authJwt.verifyJwt, paramsValidator.validateParamId, userMiddleware.update],
     userController.update

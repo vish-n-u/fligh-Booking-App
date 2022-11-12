@@ -20,6 +20,7 @@
     "mysql2": "^2.3.3",
     "node-rest-client": "^3.1.1",
     "otp-generator": "^4.0.0",
-    "sequelize": "^6.23.1"
+    "sequelize": "^6.23.1",
+    "validate-date": "^2.0.0"
   }
 }

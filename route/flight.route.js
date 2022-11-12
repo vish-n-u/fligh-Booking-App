@@ -1,6 +1,6 @@
 const {
   authJwt,
-  flightValidator,
+  flightMiddleware,
   paramsValidator,
 } = require("../middleware/index.middleware");
 const flightController = require("../controller/flight.controller");
@@ -8,16 +8,16 @@ const flightController = require("../controller/flight.controller");
 module.exports = (app) => {
   app.post(
     "/flightApp/api/v1/flights",
-    [authJwt.verifyJwt, authJwt.isAdminOrFlightAdmin, flightValidator.create],
+    [authJwt.verifyJwt, authJwt.isAdminOrFlightAdmin, flightMiddleware.create],
     flightController.create
   );
-  app.post(
+  app.put(
     "/flightApp/api/v1/flights/:id",
     [
       authJwt.verifyJwt,
       authJwt.isAdminOrFlightAdmin,
       paramsValidator.validateFlightParamId,
-      flightValidator.update,
+      flightMiddleware.update,
     ],
     flightController.update
   );

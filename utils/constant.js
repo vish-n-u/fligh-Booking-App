@@ -25,6 +25,14 @@ module.exports = {
     delhi: "DELHI",
     kochi: "KOCHI",
   },
+  flightStatus: {
+    upComing: "UP-COMING",
+    cancelled: "CANCELLED",
+    delayed: "DELAYED",
+    inProgress: "IN-PROGRESS",
+    completed: "COMPLETED",
+  },
+  thirtyDays: 30 * 24 * 3600 * 1000,
   necessaryDetails: async (arr) => {
     let response = [];
     arr.forEach((element) => {

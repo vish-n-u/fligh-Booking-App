@@ -28,7 +28,7 @@ async function init() {
     await userModel.sync();
     await otpModel.sync({ force: true });
     await flightModel.sync();
-    await flightDateModel.sync();
+    await flightDateModel.sync({ force: true });
     // await userModel.bulkCreate(insertData());
     console.log("successfully connected");
   } catch (err) {

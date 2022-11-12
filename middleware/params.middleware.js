@@ -1,5 +1,6 @@
 const constant = require("../utils/constant");
 const { userModel: User, flightModel: Flight } = require("../config/db.config");
+const { flightDateModel: FlightDate } = require("../config/db.config");
 
 exports.validateParamId = async (req, res, next) => {
   if (!req.params.id) {
@@ -28,6 +29,20 @@ exports.validateFlightParamId = async (req, res, next) => {
       return res.status(403).send("Invalid request");
     }
     req.flightThroughParams = flightId;
+    next();
+  }
+};
+
+exports.validateFlightDateParamId = async (req, res, next) => {
+  if (!req.params.id) return res.status(400).send("Invalid resource location");
+  else {
+    const validFlightDate = await FlightDate.findOne({
+      where: { id: req.params.id },
+    });
+    if (!validFlightDate) {
+      return res.status(400).send("Invalid id provided");
+    }
+    req.flightDateThroughParams = validFlightDate;
     next();
   }
 };
