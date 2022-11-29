@@ -19,7 +19,8 @@ This project is node.js back-end code for a Flight booking application that allo
   - name : "spiceFlight",
   - noOfSeats : 125,
   - startPoint : "Kochi",
-  - endPoint : "Mumbai"
+  - endPoint : "Mumbai",
+  - flightAdminId : 5
 
 
 > ## REST API paths
