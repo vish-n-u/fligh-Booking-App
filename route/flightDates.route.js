@@ -39,7 +39,7 @@ module.exports = (app) => {
     flightDateController.findAll
   );
   app.get(
-    "/flightApp/api/v1/FlightDates",
+    "/flightApp/api/v1/FlightDate",
     [authJwt.verifyJwt, flightDatesMiddleware.findByQuery],
     flightDateController.findByQuery
   );

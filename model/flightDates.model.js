@@ -39,6 +39,7 @@ function flightDate(Sequelize, sequelize) {
         flightStatus.cancelled,
         flightStatus.delayed,
         flightStatus.inProgress,
+        flightStatus.completed,
       ]),
       defaultValue: flightStatus.upComing,
     },

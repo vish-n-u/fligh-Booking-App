@@ -2,8 +2,9 @@ const {
   flightDateModel: FlightDate,
   flightModel,
 } = require("../config/db.config");
+const constant = require("../utils/constant");
 // const flightDate = require("../model/flightDates.model");
-
+// const prisma = require("prisma");
 exports.createSingleFlightDate = async (req, res) => {
   let obj = {
     date: req.body.date,
@@ -76,12 +77,21 @@ exports.findAll = async (req, res) => {
 };
 
 exports.findByQuery = async (req, res) => {
+  console.log("=========", req.querObj.date);
   try {
     const resp = await FlightDate.findAll({
-      where: req.queryObj,
-      order: [pricePerSeat, "ASC"],
+      where: {
+        status: constant.flightStatus.upComing,
+        date: req.querObj.date,
+        startPoint: req.query.startPoint,
+        endPoint: req.query.endPoint,
+      },
+      order: [["pricePerSeat", "ASC"]],
     });
-    return res.status(200).send(resp);
+    //  const resp1 = await FlightDate.findOne({ where: { date: req.queryObj.date } });
+    // console.log("--------------", resp1);
+    const response = await constant.possibleFLights(resp);
+    return res.status(200).send(response);
   } catch (err) {
     console.log(err);
     return res.status(500).send("Internal server err....");

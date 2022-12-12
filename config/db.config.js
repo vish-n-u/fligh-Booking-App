@@ -21,6 +21,8 @@ const flightDateModel = require("../model/flightDates.model")(
   Sequelise,
   sequelize
 );
+const bookingModel = require("../model/bookings.model")(Sequelise, sequelize);
+const paymentModel = require("../model/payment.model")(Sequelise, sequelize);
 const { insertData } = require("../utils/seedData");
 async function init() {
   try {
@@ -28,7 +30,9 @@ async function init() {
     await userModel.sync();
     await otpModel.sync({ force: true });
     await flightModel.sync();
-    await flightDateModel.sync({ force: true });
+    await flightDateModel.sync();
+    await bookingModel.sync();
+    await paymentModel.sync();
     // await userModel.bulkCreate(insertData());
     console.log("successfully connected");
   } catch (err) {
@@ -37,4 +41,11 @@ async function init() {
 }
 init();
 
-module.exports = { userModel, otpModel, flightDateModel, flightModel };
+module.exports = {
+  userModel,
+  otpModel,
+  flightDateModel,
+  flightModel,
+  bookingModel,
+  paymentModel,
+};

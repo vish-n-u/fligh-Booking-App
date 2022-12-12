@@ -7,8 +7,8 @@ module.exports = (app) => {
     userController.registration
   );
   //   app.post("/flightBooking/api/v1/login");
-  app.post(
-    "/flighBooking/ap1/v1/otp",
+  app.put(
+    "/flighBooking/ap1/v1/otp/:id",
     [authMiddleware.otpVerify],
     userController.otpCheck
   );

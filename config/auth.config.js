@@ -15,7 +15,7 @@ const otp = () => {
   //   console.log(num);
   //   return num;
 };
-const verfiedUserData = (newUser, newOtp) =>
+const verfiedUserData = (newUser, newOtp) => {
   setTimeout(async () => {
     const newUsers = await User.findOne({ where: { id: newUser.id } });
     console.log(newUsers.userStatus, newUser.id);
@@ -28,6 +28,7 @@ const verfiedUserData = (newUser, newOtp) =>
     await Otp.destroy({ where: { id: newOtp.id } });
     await newOtp.save();
   }, 300000);
+};
 const otpRoute = process.env.otpRoute;
 const secretKy = process.env.secretKey;
 const refreshKy = process.env.refreshKey;
