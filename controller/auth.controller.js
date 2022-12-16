@@ -6,6 +6,7 @@ const mailSend = require("../config/mail.config");
 const authConfig = require("../config/auth.config");
 const { userModel: User, otpModel: Otp } = require("../config/db.config");
 const constant = require("../utils/constant");
+const { userStatus } = require("../utils/constant");
 
 exports.registration = async (req, res) => {
   // console.log("DATA");
@@ -37,9 +38,19 @@ exports.registration = async (req, res) => {
     res
       .status(200)
       .send(
-        `An otp has been sent to you please enter that on this link ${authConfig.otpRoute}`
+        `An otp has been sent to you please enter that on this link ${
+          authConfig.otpRoute + "/" + newOtp.id
+        }`
       );
     verfiedUserData(newUser, newOtp);
+    // setTimeout(async () => {
+    // console.log("newUSer:", newUser);
+    // let userCreated = await User.findOne({ where: { id: newUser.id } });
+    // console.log(userCreated, userCreated.userStatus);
+    // if (userCreated.userStatus == userStatus.inProgress) {
+    // await User.destroy({ where: { id: userCreated.id } });
+    // }
+    // }, 5000);
   } catch (err) {
     console.log(err);
     return res.status(500).send("internal server error");
@@ -87,7 +98,7 @@ exports.login = async (req, res) => {
 };
 
 exports.refreshToken = async (req, res) => {
-  const accessToken =  jwt.sign({ id: req.user.id }, authConfig.secretKy, {
+  const accessToken = jwt.sign({ id: req.user.id }, authConfig.secretKy, {
     expiresIn: "15m",
   });
   try {

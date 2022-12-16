@@ -18,8 +18,10 @@
     "express": "^4.18.1",
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.3.3",
+    "node-cron": "^3.0.2",
     "node-rest-client": "^3.1.1",
     "otp-generator": "^4.0.0",
+    "prisma": "^4.6.1",
     "sequelize": "^6.23.1",
     "validate-date": "^2.0.0"
   }

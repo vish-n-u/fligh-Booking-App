@@ -59,4 +59,4 @@ exports.update = async (req, res) => {
   }
 };
 
-exports.updateEmail = async (req, res, next) => {};
+// exports.updateEmail = async (req, res, next) => {};

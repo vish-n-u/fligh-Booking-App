@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 const constant = require("../utils/constant");
 
 exports.verifyJwt = async (req, res, next) => {
+  console.log(0);
   const token = req.headers["x-access-token"];
   if (!token) {
     return res.status(400).send("Invalid token");
@@ -84,5 +85,19 @@ exports.isAdmin = async (req, res, next) => {
     return res.status(401).send({
       message: "Invalid request",
     });
+  }
+};
+
+exports.isAdminOrOwner = async (req, res, next) => {
+  console.log(2);
+  if (req.user.userType == constant.userType.admin) {
+    console.log(2.5);
+    next();
+  }
+  else if (req.user.id == req.bookingThroughParams.userId) {
+    console.log(2.7);
+    next();
+  } else {
+    return res.status(404).send("Unauthorized request");
   }
 };

@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const { refreshKy } = require("../config/auth.config");
 
 const { userModel: User, otpModel: Otp } = require("../config/db.config");
+const { userStatus } = require("../utils/constant");
 const constant = require("../utils/constant");
 const { emailVerification, passwordVerification } = constant;
 
@@ -58,6 +59,7 @@ exports.registrationValidation = async (req, res, next) => {
       .status(400)
       .send("User with this emailId already exists please try logging in");
   }
+
   // contact: req.body.contact,
   if (req.body.contact && req.body.contact != 10) {
     return res.status(400).send("Invalid contact number provided");
@@ -84,21 +86,25 @@ exports.otpVerify = async (req, res, next) => {
   if (!req.body.otp) {
     return res.status(400).send("Please provide otp");
   }
+  if (!req.body.email) {
+    return res.status(400).send("please provide email");
+  }
   try {
-    let userOtp = await Otp.findOne({ where: { otpNumber: req.body.otp } });
+    let userOtp = await Otp.findOne({ where: { id: req.params.id } });
     if (!userOtp) {
-      return res.status(400).send("otp timed out");
+      return res.status(404).send("No such resource");
     }
     // console.log(userOtp);
-    const user = await User.findOne({
-      where: { emailId: userOtp.userEmailId },
-    });
-    if (!user) {
-      return res.status(400).send("Invalid otp");
+
+    if (userOtp.userEmailId != req.body.email) {
+      return res.status(400).send("Invalid details provided");
     }
+    if (userOtp.otpNumber != req.body.otp)
+      return res.status(400).send("Incorrect otp provided");
     // console.log(user);
+    const user = await User.findOne({ where: { emailId: req.body.email } });
     if (user.userStatus != constant.userStatus.inProgress) {
-      return res.status(408).send("please register again");
+      return res.status(404).send("please register again");
     }
     req.user = user;
     next();
@@ -122,6 +128,9 @@ exports.login = async (req, res, next) => {
     bcrypt.compareSync(req.body.password, user.password) == false
   ) {
     return res.status(400).send("Incorrect password");
+  }
+  if (user.userStatus !== constant.userStatus.approved) {
+    return res.status(400).send("Unauthorized request");
   }
   req.user = user;
   next();
