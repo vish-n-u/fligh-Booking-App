@@ -1,8 +1,40 @@
 const { userModel: User } = require("../config/db.config");
+const { refreshKy, secretKy } = require("../config/auth.config");
 
 const jwt = require("jsonwebtoken");
+const constant = require("../utils/constant");
 
-exports.validateRefreshToken = async (req, res, next) => {
+exports.verifyJwt = async (req, res, next) => {
+  const token = req.headers["x-access-token"];
+  if (!token) {
+    return res.status(400).send("Invalid token");
+  }
+  try {
+    jwt.verify(token, secretKy, async (err, decoded) => {
+      if (err) {
+        console.log(err);
+        return res.status(401).send("Unauthorized user");
+      } else {
+        console.log("---", decoded.id);
+        const user = await User.findOne({ where: { id: decoded.id } });
+        console.log(decoded);
+        if (!user) {
+          return res.status(400).send("Invalid userToken");
+        } else if (user.userStatus !== constant.userStatus.approved) {
+          return res.status(401).send("Unauthorized!!");
+        } else {
+          req.user = user;
+          next();
+        }
+      }
+    });
+  } catch (err) {
+    console.log(err.message);
+    return res.status(500).send("internal server issue!");
+  }
+};
+
+exports.verifyRefreshToken = async (req, res, next) => {
   const refreshToken = req.headers["x-access-token"];
 
   if (!refreshToken) {
@@ -15,8 +47,8 @@ exports.validateRefreshToken = async (req, res, next) => {
           message: "UnAuthorised!",
         });
       }
-      console.log(decoded, decoded.id);
-      const user = await User.findOne({ userId: decoded.id });
+      // console.log(decoded, decoded.id);
+      const user = await User.findOne({ where: { id: decoded.id } });
       if (!user) {
         return res.status(400).send({
           message: "The user that this token belongs to does not exist",
@@ -28,5 +60,29 @@ exports.validateRefreshToken = async (req, res, next) => {
   } catch (err) {
     console.log(err.message);
     return res.status(500).send("Internal server error");
+  }
+};
+
+exports.isAdminOrFlightAdmin = (req, res, next) => {
+  if (
+    req.user.userType == constant.userType.admin ||
+    req.user.userType == constant.userType.flightAdmin
+  ) {
+    next();
+  } else {
+    return res.status(401).send("Unauthorized user");
+  }
+};
+
+exports.isAdmin = async (req, res, next) => {
+  if (
+    req.user.userType == constant.userType.admin &&
+    req.user.userStatus == constant.userStatus.approved
+  ) {
+    next();
+  } else {
+    return res.status(401).send({
+      message: "Invalid request",
+    });
   }
 };

@@ -15,4 +15,37 @@ module.exports = {
 
   passwordVerification:
     /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}/, //
+  flightStart: {
+    mumbai: "MUMBAI",
+    delhi: "DELHI",
+    kochi: "KOCHI",
+  },
+  flightEnd: {
+    mumbai: "MUMBAI",
+    delhi: "DELHI",
+    kochi: "KOCHI",
+  },
+  flightStatus: {
+    upComing: "UP-COMING",
+    cancelled: "CANCELLED",
+    delayed: "DELAYED",
+    inProgress: "IN-PROGRESS",
+    completed: "COMPLETED",
+  },
+  thirtyDays: 30 * 24 * 3600 * 1000,
+  necessaryDetails: async (arr) => {
+    let response = [];
+    arr.forEach((element) => {
+      let obj = {
+        firstName: element.firstName,
+        lastName: element.lastName,
+        emailId: element.emailId,
+        contact: element.contact,
+        userType: element.userType,
+        userStatus: element.userStatus,
+      };
+      response.push(obj);
+    });
+    return response;
+  },
 };

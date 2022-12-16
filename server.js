@@ -11,7 +11,10 @@ app.get("/", (req, res) => {
   console.log("Reached");
   res.status(200).send("Hello World!");
 });
+require("./route/auth.route")(app);
 require("./route/user.route")(app);
+require("./route/flight.route")(app);
+require("./route/flightDates.route")(app);
 app.listen(serverConfig, (req, res) => {
   console.log("SuccessFully reached");
 });

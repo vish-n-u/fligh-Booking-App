@@ -73,7 +73,7 @@ exports.registrationValidation = async (req, res, next) => {
   // userType: req.body.userType,
   if (
     req.body.userType &&
-    constant.userType[req.body.userType.toLowerCase()] == undefined
+    constant.userType[req.body.userType.toLowerCase()] != undefined
   ) {
     return res.status(400).send("Invalid userType provided");
   }
@@ -116,6 +116,7 @@ exports.login = async (req, res, next) => {
   if (!user) {
     return res.status(400).send("Invalid emailID");
   }
+  console.log(bcrypt.compareSync(req.body.password, user.password));
   if (
     !req.body.password ||
     bcrypt.compareSync(req.body.password, user.password) == false

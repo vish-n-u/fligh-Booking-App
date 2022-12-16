@@ -16,13 +16,20 @@ const sequelize = new Sequelise(
 
 const userModel = require("../model/user.model")(Sequelise, sequelize);
 const otpModel = require("../model/otp.model")(Sequelise, sequelize);
+const flightModel = require("../model/flight.model")(Sequelise, sequelize);
+const flightDateModel = require("../model/flightDates.model")(
+  Sequelise,
+  sequelize
+);
 const { insertData } = require("../utils/seedData");
 async function init() {
   try {
     await sequelize.authenticate();
     await userModel.sync();
     await otpModel.sync({ force: true });
-    await userModel.bulkCreate(insertData());
+    await flightModel.sync();
+    await flightDateModel.sync({ force: true });
+    // await userModel.bulkCreate(insertData());
     console.log("successfully connected");
   } catch (err) {
     console.log(err);
@@ -30,4 +37,4 @@ async function init() {
 }
 init();
 
-module.exports = { userModel, otpModel };
+module.exports = { userModel, otpModel, flightDateModel, flightModel };
