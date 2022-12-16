@@ -1,7 +1,7 @@
 const { paymentStatus } = require("../utils/constant");
 
 module.exports = (Sequelize, sequelize) => {
-  const paymentModel = sequelize.define("PaymentModel", {
+  const paymentModel = sequelize.define("Payments", {
     id: {
       type: Sequelize.DataTypes.INTEGER,
       autoIncrement: true,

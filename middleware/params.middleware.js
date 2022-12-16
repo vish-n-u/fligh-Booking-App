@@ -8,7 +8,7 @@ const {
   flightDateModel: FlightDate,
   paymentModel: Payments,
 } = require("../config/db.config");
-const { bookingStatus } = require("../utils/constant");
+
 
 exports.validateParamId = async (req, res, next) => {
   if (!req.params.id) {
@@ -68,7 +68,6 @@ exports.validatePaymentParamId = async (req, res, next) => {
 };
 
 exports.validateBookingId = async (req, res, next) => {
-  console.log(1);
   try {
     const bookingThroughParams = await Booking.findOne({
       where: { id: req.params.id },
@@ -77,7 +76,7 @@ exports.validateBookingId = async (req, res, next) => {
       return res.status(400).send("Invalid booking id provided");
 
     req.bookingThroughParams = bookingThroughParams;
-    console.log(1.5);
+
     next();
   } catch (err) {
     console.log(err);

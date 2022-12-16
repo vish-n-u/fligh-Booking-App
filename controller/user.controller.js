@@ -49,8 +49,14 @@ exports.update = async (req, res) => {
   };
 
   try {
-    const userDetail = await User.update(obj, { where: { id: req.params.id } });
-    const updatedUser = await User.findOne({ where: { id: req.params.id } });
+    // const userDetail = await User.update(obj, { where: { id: req.params.id } });
+    // const updatedUser = await User.findOne({ where: { id: req.params.id } });
+    const promiseReturn = await Promise.all([
+      User.update(obj, { where: { id: req.params.id } }),
+      User.findOne({ where: { id: req.params.id } }),
+    ]);
+    const userDetail = promiseReturn[0];
+    const updatedUser = promiseReturn[1];
     const response = await necessaryDetails([updatedUser]);
     return res.status(200).send(response);
   } catch (err) {

@@ -37,13 +37,7 @@ exports.createBooking = async (req, res, next) => {
     return res.status(400).send("Invalid number of seats provided");
   }
   const noOfSeats = req.body.noOfSeats ? req.body.noOfSeats : 1;
-  // console.log(
-  //   flightDate.noOfSeats,
-  //   flightDate.noOfBookedSeats,
-  //   noOfSeats,
-  //   flightDate.noOfSeats -
-  //     (Number(flightDate.noOfBookedSeats) + Number(noOfSeats))
-  // );
+
   if (
     flightDate.noOfSeats -
       (Number(flightDate.noOfBookedSeats) + Number(noOfSeats)) <
@@ -66,7 +60,6 @@ exports.createBooking = async (req, res, next) => {
 
 exports.cancelBooking = async (req, res, next) => {
   const date = new Date();
-  console.log(3);
 
   try {
     if (req.bookingThroughParams.bookingStatus != bookingStatus.successful) {
@@ -74,13 +67,11 @@ exports.cancelBooking = async (req, res, next) => {
         .status(400)
         .send("you are not allowed to make changes in this booking");
     }
-    console.log(3.1, req.bookingThroughParams.flightDateId);
+
     await FlightDate.findOne({
       where: { id: req.bookingThroughParams.flightDateId },
     })
       .then((flightDateDetail) => {
-        console.log(3.2);
-        console.log("-----", flightDateDetail);
         if (flightDateDetail.date <= date) {
           return res
             .status(400)
@@ -94,11 +85,11 @@ exports.cancelBooking = async (req, res, next) => {
         ) {
           return res.status(400).send("You cant remove these many seats");
         }
-        const dateDiff = constant.getDateDiff(flightDateDetail.date)
-        let returnAmountPercent =
-          dateDiff < 5
-            ? (dateDiff) * 10
-            : 40;
+
+        const flightsDate = new Date(flightDateDetail.date);
+
+        const dateDiff = constant.getDateDiff(flightsDate);
+        let returnAmountPercent = dateDiff < 5 ? dateDiff * 10 : 40;
         console.log(returnAmountPercent, dateDiff);
         const amount =
           (flightDateDetail.pricePerSeat *
@@ -106,9 +97,9 @@ exports.cancelBooking = async (req, res, next) => {
             req.body.noOfSeats) /
           100;
         req.flightDateDetails = flightDateDetail;
-        console.log(req.flightDateDetails, "----------");
+
         req.amount = amount;
-        console.log(3.5);
+
         next();
       })
       .catch((err) => {
@@ -126,10 +117,12 @@ exports.getAllBooking = async (req, res, next) => {
   try {
     if (req.user.userType == userType.admin && req.body.userId != undefined) {
       bookingDetails = await Booking.findOne({
-        where: { id: req.body.userId },
+        where: { userId: req.body.userId },
       });
     } else {
-      bookingDetails = await Booking.findOne({ where: { id: req.user.id } });
+      bookingDetails = await Booking.findOne({
+        where: { userId: req.user.id },
+      });
     }
     if (!bookingDetails)
       return res.status(400).send("Incorrect userId provided");
@@ -138,5 +131,21 @@ exports.getAllBooking = async (req, res, next) => {
   } catch (err) {
     console.log(err);
     return res.status(500).send("internal server err...");
+  }
+};
+
+exports.getOneBooking = async (req, res, next) => {
+  if (req.user.userType == constant.userType.admin) next();
+  else if (req.bookingThroughParams.userId == req.user.id) next();
+  else if (req.user.userType == constant.userType.flightAdmin) {
+    const flightDateDetails = await FlightDate.findOne({
+      where: { id: req.bookingThroughParams.flightAdminId },
+    });
+    if (flightDateDetails.flightAdminId == req.user.id) next();
+    else {
+      return res.status(404).send("Unauthorized request");
+    }
+  } else {
+    return res.status(404).send("Unauthorized request");
   }
 };

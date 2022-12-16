@@ -25,4 +25,9 @@ module.exports = (app) => {
     [authJwt.verifyJwt, bookingMiddleware.getAllBooking],
     bookingController.getAllBookings
   );
+  app.get(
+    "/flightApp/ap1/v1/bookings/:id",
+    [authJwt.verifyJwt, bookingMiddleware.getOneBooking],
+    bookingController.getOneBooking
+  );
 };

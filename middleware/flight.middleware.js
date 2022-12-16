@@ -51,7 +51,6 @@ exports.create = async (req, res, next) => {
 exports.update = async (req, res, next) => {
   if (req.user.userType == constants.userType.admin) {
     if (req.body.flightAdminId) {
-      console.log(true);
       const flightAdmin = await User.findOne({
         where: { id: req.body.flightAdminId },
       });
@@ -62,18 +61,12 @@ exports.update = async (req, res, next) => {
       ) {
         return res.status(400).send("Invalid flightAdminID");
       }
-      console.log(flightAdmin);
+
       req.flightAdmin = flightAdmin;
     }
   }
   // name: req.body.name ? req.body.name : req.flight.name,
 
-  console.log(
-    !req.body.name.trim().length > 5 || !req.body.name.trim().length < 16,
-    req.body.name.trim().length,
-    !req.body.name.trim().length > 5,
-    !req.body.name.trim().length < 16
-  );
   if (
     req.body.name &&
     (!(req.body.name.trim().length > 5) || !(req.body.name.trim().length < 16))

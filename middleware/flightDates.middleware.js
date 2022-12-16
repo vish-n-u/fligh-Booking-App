@@ -5,8 +5,6 @@ const {
 const { flightStart, flightEnd } = require("../utils/constant");
 const constant = require("../utils/constant");
 const dateValidation = require("validate-date");
-const { DATEONLY, Sequelize } = require("sequelize");
-// const { SequelizeMethod } = require("sequelize/types/utils");
 
 exports.singleDate = async (req, res, next) => {
   const flight = await Flight.findOne({ where: { id: req.body.flightId } });
@@ -115,7 +113,6 @@ exports.multipleDate = async (req, res, next) => {
 
       if (
         !newFlightDate ||
-        // currDate.getDate() >= newFlightDate.getDate() ||
         newFlightDate.valueOf() > currDate.valueOf() + constant.thirtyDays
       ) {
         let obj = {
@@ -125,21 +122,6 @@ exports.multipleDate = async (req, res, next) => {
         errDates.push(obj);
         continue;
       }
-      // ifFlightExistsOnNewFlightDate.filter((arr) => {
-      // console.log(arr.date, x.date);
-      // if (arr.date == x.date) {
-      // console.log(x.date);
-      // }
-      // });
-
-      // if (ifFlightExistsOnNewFlightDate) {
-      //   let obj = {
-      //     x,
-      //     err: "This flight already exists on this date, to make any changes pleaase use update",
-      //   };
-      //   errDates.push(obj);
-      //   continue;
-      // }
     } catch (err) {
       console.log(err);
       let obj = {
@@ -283,7 +265,7 @@ exports.findByQuery = async (req, res, next) => {
     if (!dateValidation(req.query.date, "boolean", "YYYY-MM-DD"))
       return res.status(400).send("Provide date in yyyy-mm-dd format ");
     const queryFlightDate = new Date(req.query.date);
-    console.log("queryDate:", queryFlightDate, req.query.date);
+
     let currDate = new Date();
     if (
       !queryFlightDate ||
@@ -293,9 +275,8 @@ exports.findByQuery = async (req, res, next) => {
       return res.status(400).send("Invalid date provided");
     }
     req.queryFlightDate = new Date(queryFlightDate.toDateString());
-    console.log(req.queryFlightDate);
   }
-  // const date1 = new Date();
+
   const day = new Date(req.query.date);
   const year = day.getFullYear();
   const month = day.getMonth() + 1;
@@ -303,7 +284,6 @@ exports.findByQuery = async (req, res, next) => {
   const searchDate = new Date(`${year}-${month}-${date}`);
   req.searchDate;
 
-  console.log(date, searchDate);
   req.querObj = {
     flightStatus: constant.flightStatus.upComing,
     date: searchDate,
@@ -311,6 +291,6 @@ exports.findByQuery = async (req, res, next) => {
     endPoint: req.query.endPoint,
     // noOfBookedSeats: noOfSeats - noOfBookedSeats > 0,
   };
-  console.log(req.querObj.date, "---------");
+
   next();
 };

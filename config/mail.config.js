@@ -3,12 +3,12 @@ if (process.NODE_ENV !== "PRODUCTION") {
 }
 const nodeClient = require("node-rest-client").Client;
 const client = new nodeClient();
-let MAIL = process.env.clientMailRoute;
-function mailSend(data) {
+let MAIL = process.env.otpMailRoute;
+function mailSend(info) {
   let args = {
     data: {
-      to: data.to,
-      otp: data.otpGenerated,
+      to: info.to,
+      otp: info.otpGenerated,
     },
     headers: {
       "Content-Type": "application/json",

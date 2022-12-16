@@ -15,6 +15,7 @@ exports.createBooking = async (req, res) => {
     bookingStatus: bookingStatus.pending,
   };
   const booking = await Bookings.create(newBooking);
+  
   let newPayment = {
     amount: req.price,
     bookingId: booking.id,
@@ -22,16 +23,15 @@ exports.createBooking = async (req, res) => {
 
   const payment = await Payments.create(newPayment);
   setTimeout(async () => {
-    console.log("SETTIMEOUT STARTED");
-    const bookingStatus = await Bookings.findOne({ where: { id: booking.id } });
-    if (bookingStatus.bookingStatus !== constant.bookingStatus.successful) {
-      console.log("SETTIMEOUT STARTED");
-      bookingStatus.bookingStatus = constant.bookingStatus.failed;
-      bookingStatus.noOfBookedSeats =
-        bookingStatus.noOfBookedSeats - req.noOfSeats;
-      await bookingStatus.save();
+    
+    const bookingS = await Bookings.findOne({ where: { id: booking.id } });
+    if (bookingS.bookingStatus !== constant.bookingStatus.successful) {
+      
+      bookingS.bookingStatus = constant.bookingStatus.failed;
+      bookingS.noOfBookedSeats = bookingS.noOfBookedSeats - req.noOfSeats;
+      await bookingS.save();
     }
-  }, 20000);
+  }, 50000);
   res.status(201).send({
     message: "Go to the payment link and pay...",
     price: req.price,
@@ -75,5 +75,13 @@ exports.getAllBookings = async (req, res) => {
   } catch (err) {
     console.log(err);
     return res.status(500).send("internal server err...");
+  }
+};
+exports.getOneBooking = async (req, res) => {
+  try {
+    return res.status(200).send(req.bookingThroughParams);
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send("Internal server err...");
   }
 };

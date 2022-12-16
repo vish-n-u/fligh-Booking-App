@@ -5,7 +5,6 @@ const jwt = require("jsonwebtoken");
 const constant = require("../utils/constant");
 
 exports.verifyJwt = async (req, res, next) => {
-  console.log(0);
   const token = req.headers["x-access-token"];
   if (!token) {
     return res.status(400).send("Invalid token");
@@ -16,9 +15,8 @@ exports.verifyJwt = async (req, res, next) => {
         console.log(err);
         return res.status(401).send("Unauthorized user");
       } else {
-        console.log("---", decoded.id);
         const user = await User.findOne({ where: { id: decoded.id } });
-        console.log(decoded);
+
         if (!user) {
           return res.status(400).send("Invalid userToken");
         } else if (user.userStatus !== constant.userStatus.approved) {
@@ -89,13 +87,9 @@ exports.isAdmin = async (req, res, next) => {
 };
 
 exports.isAdminOrOwner = async (req, res, next) => {
-  console.log(2);
   if (req.user.userType == constant.userType.admin) {
-    console.log(2.5);
     next();
-  }
-  else if (req.user.id == req.bookingThroughParams.userId) {
-    console.log(2.7);
+  } else if (req.user.id == req.bookingThroughParams.userId) {
     next();
   } else {
     return res.status(404).send("Unauthorized request");
