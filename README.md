@@ -56,6 +56,6 @@ This project is node.js back-end code for a flight booking application that can 
 
 <br/>
 
-## REST API paths
+
 
 Further Details about each entities would be provided in their respective branches
