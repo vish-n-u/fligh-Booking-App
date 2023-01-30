@@ -1,5 +1,6 @@
 # Flight Booking application
-This project is node.js back-end code for a flight booking application that can create various entities like users, flightDates, fligtys, bookings and payments as well as perform various actions on them.
+This project is node.js back-end code for a flight booking application that can create various entities like users, flightDates, fligtys, bookings and payments as well as perform various actions on them. User authentication is done according to oAuth 2.0 standards using jsonwebtoken, POSTMAN is used for
+Integration testing using REST API's.
 
 <br/>
 
