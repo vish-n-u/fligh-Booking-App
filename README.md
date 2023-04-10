@@ -43,6 +43,7 @@ Integration testing using REST API's.
 |-|
 |express|
 |sequelize|
+|MySQL|
 |mongoose|
 |jsonwebtoken|
 |node-rest-client|
